@@ -9,7 +9,7 @@ namespace Synaptafin.Editor.SelectionTracker {
   public class EntryServicePersistence : ScriptableSingleton<EntryServicePersistence> {
 
     [SerializeReference]
-    private List<IEntryService> _entryServices;
+    private List<IEntryService> _entryServices = new();
 
     private Dictionary<string, IEntryService> ServiceDict => _entryServices.ToDictionary(static service => service.GetType().Name);
 

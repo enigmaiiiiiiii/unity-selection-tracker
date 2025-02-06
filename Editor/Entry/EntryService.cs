@@ -35,7 +35,7 @@ namespace Synaptafin.Editor.SelectionTracker {
     public UnityEvent OnUpdated => _onUpdated;
 
     public int SizeLimit { get; } = 100;
-    private int _currentSelectionIndex = 0;
+    private int _currentSelectionIndex = -1;
 
     private HistoryService() { }
 
@@ -67,7 +67,7 @@ namespace Synaptafin.Editor.SelectionTracker {
         _entryList.RemoveAt(0);
       }
 
-      // ResetSelection();
+      ResetCurrentSelection();
       OnUpdated?.Invoke();
     }
 
@@ -110,6 +110,10 @@ namespace Synaptafin.Editor.SelectionTracker {
         _currentSelectionIndex = _entryList.Count - 1;
       }
       return _entryList[_currentSelectionIndex];
+    }
+
+    private void ResetCurrentSelection() {
+      _currentSelectionIndex = -1;
     }
   }
 
