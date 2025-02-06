@@ -49,7 +49,7 @@ namespace Synaptafin.Editor.SelectionTracker {
         return;
       }
 
-      if (_entryList.Count > _currentSelectionIndex && entry.Equals(_entryList[_currentSelectionIndex])) {
+      if (_currentSelectionIndex > 0 && _entryList.Count > _currentSelectionIndex && entry.Equals(_entryList[_currentSelectionIndex])) {
         return;
       }
 
