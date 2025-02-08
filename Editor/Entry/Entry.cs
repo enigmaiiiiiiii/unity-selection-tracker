@@ -112,7 +112,7 @@ namespace Synaptafin.Editor.SelectionTracker {
     public virtual void Open() { }
 
     // cache for scene switching or editor session closed
-    private void CacheRefInfo(Object obj) {
+    protected void CacheRefInfo(Object obj) {
       if (obj == null) {
         return;
       }

@@ -33,16 +33,23 @@ namespace Synaptafin.Editor.SelectionTracker {
         if (_cachedRef == null) {
           TryRestoreAndCache();
         }
-
-        if (_cachedRef == null && !_cachedScene.isLoaded) {
-          return _isPlayModeObject
-            ? RefState.Destroyed
-            : RefState.Unloaded;
+        if (!_cachedScene.isLoaded) {
+          return RefState.Unloaded;
         }
 
-        if (_cachedScene.isLoaded) {
-          return RefState.Loaded;
+        /* if (_cachedRef == null && !_cachedScene.isLoaded) { */
+        /*   return _isPlayModeObject */
+        /*     ? RefState.Destroyed */
+        /*     : RefState.Unloaded; */
+        /* } */
 
+        if (_cachedScene.isLoaded) {
+
+          if (_cachedRef == null && _isPlayModeObject) {
+            return RefState.Destroyed;
+          }
+
+          return RefState.Loaded;
         }
         return RefState.Unknown;
       }
@@ -58,11 +65,20 @@ namespace Synaptafin.Editor.SelectionTracker {
 
     public override void Open() {
 
+      if (RefState.HasFlag(RefState.Loaded)) {
+        if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) {
+          EditorSceneManager.OpenScene(_cachedScenePath);
+          Selection.activeObject = Ref;
+          return;
+        }
+      }
+
       if (RefState.HasFlag(RefState.Unloaded)) {
         if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) {
           EditorSceneManager.OpenScene(_cachedScenePath);
           TryRestoreAndCache();
           Selection.activeObject = Ref;
+          return;
         }
       }
       if (RefState.HasFlag(RefState.Loaded)) {
@@ -101,6 +117,7 @@ namespace Synaptafin.Editor.SelectionTracker {
 
     protected void TryRestoreAndCache() {
       if (TryRestoreFromId(out GameObject go)) {
+        CacheRefInfo(go);
         CacheGameObjectRefInfo(go);
       }
     }
