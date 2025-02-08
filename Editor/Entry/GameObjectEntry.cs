@@ -68,6 +68,7 @@ namespace Synaptafin.Editor.SelectionTracker {
       if (RefState.HasFlag(RefState.Loaded)) {
         if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) {
           EditorSceneManager.OpenScene(_cachedScenePath);
+          TryRestoreAndCache();
           Selection.activeObject = Ref;
           return;
         }
