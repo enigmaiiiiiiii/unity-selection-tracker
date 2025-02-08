@@ -26,7 +26,7 @@ namespace Synaptafin.Editor.SelectionTracker {
     private static readonly Lazy<HistoryService> s_instance = new(static () => new());
     public static HistoryService Instance => s_instance.Value;
 
-    [SerializeField]
+    [SerializeReference]
     private List<Entry> _entryList = new();
     public List<Entry> GetEntries => _entryList.AsEnumerable().Reverse().ToList();
 
@@ -123,8 +123,9 @@ namespace Synaptafin.Editor.SelectionTracker {
     private static readonly Lazy<MostVisitedService> s_instance = new(static () => new());
     public static MostVisitedService Instance => s_instance.Value;
 
-    [SerializeField]
+    [SerializeReference]
     private List<Entry> _slidingWindow = new();
+
     public List<Entry> GetEntries => _slidingWindow
       .GroupBy(static entry => entry)
       .OrderByDescending(static group => group.Count())
@@ -173,7 +174,7 @@ namespace Synaptafin.Editor.SelectionTracker {
       RemoveOldest,
     }
 
-    [SerializeField]
+    [SerializeReference]
     private List<Entry> _entries = new();
     private List<Entry> _entries0;
 

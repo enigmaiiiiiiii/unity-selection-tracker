@@ -16,10 +16,11 @@ namespace Synaptafin.Editor.SelectionTracker {
     public List<(string, bool)> Toggles => _toggles;
 
     [SerializeField]
-    private GameObjectState _globalStateFilter = GameObjectState.All;
-    public GameObjectState GlobalStateFilter {
-      get => _globalStateFilter;
-      set => _globalStateFilter = value;
+    private RefState _refStateFilter = RefState.All;
+
+    public RefState RefStateFilter {
+      get => _refStateFilter;
+      set => _refStateFilter = value;
     }
 
     public PreferencePersistence() {
@@ -31,7 +32,7 @@ namespace Synaptafin.Editor.SelectionTracker {
       _toggles.Add((Constants.BACKGROUND_RECORD_KEY, false));
       _toggles.Add((Constants.DETAIL_ON_HOVER_KEY, true));
 
-      _toggles.Add((Constants.SHOW_LOADED_GAMEOBJECTS_KEY, true));
+      _toggles.Add((Constants.RECORD_GAMEOBJECTS_KEY, true));
       _toggles.Add((Constants.SHOW_UNLOADED_GAMEOBJECTS_KEY, true));
       _toggles.Add((Constants.SHOW_DESTROYED_GAMEOBJECTS_KEY, false));
     }

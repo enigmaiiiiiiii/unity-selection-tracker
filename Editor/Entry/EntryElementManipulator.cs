@@ -87,7 +87,12 @@ namespace Synaptafin.Editor.SelectionTracker {
       target.ReleasePointer(0);
 
       if (evt.button == 0 && evt.clickCount == 1) {
-        if (Entry.GameObjectInstanceState == GameObjectState.Unloaded) {
+        bool unSelectable = Entry.RefState.HasFlag(RefState.Deleted)
+          || Entry.RefState.HasFlag(RefState.Destroyed)
+          || Entry.RefState.HasFlag(RefState.Unstaged)
+          || Entry.RefState.HasFlag(RefState.Unloaded);
+
+        if (unSelectable) {
           return;
         }
 
@@ -97,22 +102,7 @@ namespace Synaptafin.Editor.SelectionTracker {
       }
 
       if (evt.button == 0 && evt.clickCount == 2) {
-        if (!Entry.IsGameObject) {
-          AssetDatabase.OpenAsset(Entry.Ref);
-        }
-
-        if (Entry.IsGameObject) {
-          if (Entry.GameObjectInstanceState == GameObjectState.Unloaded) {
-            if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) {
-              EditorSceneManager.OpenScene(Entry.ScenePath);
-              _entryElement.GetEntryService().CurrentSelectionIndex = _entryElement.Index;
-              Selection.activeObject = Entry.Ref;
-            }
-          }
-          if (Entry.Ref != null) {
-            Entry.Ping();
-          }
-        }
+        Entry.Open();
       }
     }
   }

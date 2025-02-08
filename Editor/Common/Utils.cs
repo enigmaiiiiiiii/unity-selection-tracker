@@ -19,13 +19,13 @@ namespace Synaptafin.Editor.SelectionTracker {
         return;
       }
 
-      bool isSceneObject = Selection.activeObject is GameObject go && go.scene.isLoaded;
+      bool isGameObject = Selection.activeObject is GameObject;
 
-      if (isSceneObject && !s_preferenceOption.GetToggleValue(Constants.SHOW_LOADED_GAMEOBJECTS_KEY)) {
+      if (isGameObject && !s_preferenceOption.GetToggleValue(Constants.RECORD_GAMEOBJECTS_KEY)) {
         return;
       }
 
-      Entry entry = new(Selection.activeObject);
+      Entry entry = EntryFactory.Create(Selection.activeObject);
       EntryServicePersistence.instance.RecordSelection(entry);
     }
 
@@ -46,7 +46,7 @@ namespace Synaptafin.Editor.SelectionTracker {
       if (obj != null) {
         Selection.activeObject = obj;
       } else {
-        if (entry.IsGameObject && entry.GameObjectInstanceState.HasFlag(GameObjectState.Unloaded)) {
+        if (entry.RefState.HasFlag(RefState.Unloaded)) {
           entry.Ping();
         }
       }

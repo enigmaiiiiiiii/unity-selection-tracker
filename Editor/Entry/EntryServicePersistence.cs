@@ -10,7 +10,6 @@ namespace Synaptafin.Editor.SelectionTracker {
 
     [SerializeReference]
     private List<IEntryService> _entryServices = new();
-
     private Dictionary<string, IEntryService> ServiceDict => _entryServices.ToDictionary(static service => service.GetType().Name);
 
     public List<IEntryService> EntryServices => _entryServices;

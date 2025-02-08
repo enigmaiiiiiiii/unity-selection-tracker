@@ -32,9 +32,9 @@ namespace Synaptafin.Editor.SelectionTracker {
           }
 
           EnumFlagsField stateFilter = prefRoot.Q<EnumFlagsField>("state-filter");
-          stateFilter.Init(s_preferencePersistence.GlobalStateFilter);
-          stateFilter.RegisterCallback<ChangeEvent<GameObjectState>>(static evt => {
-            s_preferencePersistence.GlobalStateFilter = evt.newValue;
+          stateFilter.Init(s_preferencePersistence.RefStateFilter);
+          stateFilter.RegisterCallback<ChangeEvent<RefState>>(static evt => {
+            s_preferencePersistence.RefStateFilter = evt.newValue;
             s_preferencePersistence.UpdateSettings();
           });
         }

@@ -16,7 +16,7 @@ namespace Synaptafin.Editor.SelectionTracker {
     private VisualElement _entryContainer;
     private readonly List<EntryElement> _entryElementsCache = new();
     private string _searchText;
-    private GameObjectState _stateFilter = GameObjectState.All;
+    private RefState _refStateFilter = RefState.All;
 
     public void OnEnable() {
       PreferencePersistence.instance.onUpdated += PreferencesUpdatedCallback;
@@ -77,9 +77,10 @@ namespace Synaptafin.Editor.SelectionTracker {
     public void AddItemsToMenu(GenericMenu menu) {
 
       menu.AddItem(
-        new GUIContent("Hide Unloaded", "Show Unloaded tooltips"),
-        !_stateFilter.HasFlag(GameObjectState.Unloaded),
-        () => ToggleStateFilterFlag(GameObjectState.Unloaded));
+        new GUIContent("Hide Unloaded"),
+        !_refStateFilter.HasFlag(RefState.Unloaded),
+        () => ToggleStateFilterFlag(RefState.Unloaded)
+      );
       menu.AddItem(new GUIContent("Clear/All", "Clear tooltips"), false, RemoveAll);
       menu.AddItem(new GUIContent("Clear/Deleted", "Clear deleted tooltips"), false, RemoveDeleted);
       menu.AddItem(new GUIContent("Clear/Destroyed", "Clear destroyed tooltips"), false, RemoveDestroyed);
@@ -130,11 +131,11 @@ namespace Synaptafin.Editor.SelectionTracker {
         return false;
       }
 
-      if (_stateFilter != 0 && _stateFilter.HasFlag(entry.GameObjectInstanceState)) {
+      if (_refStateFilter != 0 && _refStateFilter.HasFlag(entry.RefState)) {
         return true;
       }
 
-      if (_stateFilter == 0 && PreferencePersistence.instance.GlobalStateFilter == GameObjectState.All) {
+      if (_refStateFilter == 0 && PreferencePersistence.instance.RefStateFilter == RefState.All) {
         return true;
       }
 
@@ -149,22 +150,22 @@ namespace Synaptafin.Editor.SelectionTracker {
 
     private void RemoveDeleted() {
       if (EditorUtility.DisplayDialog("Confirm", "Clear Deleted Records?", "Yes", "No")) {
-        _entryService.RemoveAll(static (entry) => entry.IsDeleted);
+        _entryService.RemoveAll(static (entry) => entry.RefState.HasFlag(RefState.Deleted));
       }
     }
 
     private void RemoveDestroyed() {
       if (EditorUtility.DisplayDialog("Confirm", "Clear Destroyed Records?", "Yes", "No")) {
-        _entryService.RemoveAll(static (entry) => entry.GameObjectInstanceState == GameObjectState.Destroyed);
+        _entryService.RemoveAll(static (entry) => entry.RefState.HasFlag(RefState.Destroyed));
       }
     }
 
-    private void ToggleStateFilterFlag(GameObjectState state) {
+    private void ToggleStateFilterFlag(RefState state) {
 
-      if (_stateFilter.HasFlag(state)) {
-        _stateFilter &= ~state;
+      if (_refStateFilter.HasFlag(state)) {
+        _refStateFilter &= ~state;
       } else {
-        _stateFilter |= state;
+        _refStateFilter |= state;
       }
 
       ReloadView();

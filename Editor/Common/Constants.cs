@@ -6,6 +6,7 @@ namespace Synaptafin.Editor.SelectionTracker {
   public static class Constants {
     public const string MENU_PATH_PREFIX = "Window/Selection Tracker/";
 
+    public const string RECORD_GAMEOBJECTS_KEY = "Record GameObject";
     public const string AUTO_REMOVE_DESTROYED_KEY = "Auto Remove Destroyed";
     public const string AUTO_REMOVE_UNLOADED_KEY = "Auto Remove Unloaded";
     public const string AUTO_REMOVE_DUPLICATED_KEY = "Auto Remove Duplicated";
@@ -14,7 +15,6 @@ namespace Synaptafin.Editor.SelectionTracker {
     public const string BACKGROUND_RECORD_KEY = "Background Record";
     public const string DETAIL_ON_HOVER_KEY = "Detail On Hover";
 
-    public const string SHOW_LOADED_GAMEOBJECTS_KEY = "Show Hierarchy View Objects";
     public const string SHOW_UNLOADED_GAMEOBJECTS_KEY = "Show Unloaded Objects";
     public const string SHOW_DESTROYED_GAMEOBJECTS_KEY = "Show Destroyed Objects";
 

@@ -1,8 +1,6 @@
-using System.Threading;
-using System.Threading.Tasks;
+using System;
 using Synaptafin.Editor.SelectionTracker;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using static Synaptafin.Editor.SelectionTracker.Constants;
 using static Synaptafin.Editor.SelectionTracker.UnityBuiltInIcons;
 
@@ -13,16 +11,16 @@ namespace UnityEngine.UIElements {
 
     private readonly VisualElement _entryRoot;
     private readonly IEntryService _entryService;
-    private readonly Label _selectedName;
-    private readonly Image _selectedIcon;
+    private readonly Label _entryText;
+    private readonly Image _entryIcon;
     private readonly Image _pingIcon;
-    private readonly Image _openPrefabIcon;
+    private readonly Image _openIcon;
     private readonly Image _favoriteIcon;
     private readonly VisualElement _entryPopupRoot;
     private bool _isFavorite = false;
 
     public int Index { get; set; }
-    public string EntryLabel => _selectedName.text;
+    public string EntryLabel => _entryText.text;
 
     private Entry _entry;
     public Entry Entry {
@@ -31,11 +29,8 @@ namespace UnityEngine.UIElements {
     }
 
     public EntryElement() {
-
       _entryRoot = UIAssetManager.instance.entryTemplate.Instantiate();
-
       this.AddManipulator(new ContextualMenuManipulator(evt => {
-        evt.menu.AppendAction("Ping", (_) => PingEntry(), DropdownMenuAction.AlwaysEnabled);
         evt.menu.AppendAction("Remove", _ => _entryService.RemoveEntry(Entry), DropdownMenuAction.AlwaysEnabled);
         evt.StopPropagation();
       }));
@@ -51,28 +46,27 @@ namespace UnityEngine.UIElements {
         PreferencePersistence.instance.onUpdated -= PreferenceUpdatedCallback;
       });
 
-      _selectedName = _entryRoot.Q<Label>("Name");
-      _selectedIcon = _entryRoot.Q<Image>("Icon");
+      _entryText = _entryRoot.Q<Label>("Name");
+      _entryIcon = _entryRoot.Q<Image>("Icon");
       _pingIcon = _entryRoot.Q<Image>("PingIcon");
-      _openPrefabIcon = _entryRoot.Q<Image>("OpenPrefabIcon");
+      _openIcon = _entryRoot.Q<Image>("OpenPrefabIcon");
       _favoriteIcon = _entryRoot.Q<Image>("FavoriteIcon");
       _entryPopupRoot = _entryRoot.Q<VisualElement>("PopupDetail");
 
       if (_pingIcon != null) {
         _pingIcon.image = EditorGUIUtility.IconContent(SEARCH_ICON_NAME).image;
-        _pingIcon.RegisterCallback<MouseUpEvent>(PingIconCallback);
+        _pingIcon.RegisterCallback<MouseUpEvent>(PingIconMouseUpCallback);
       }
 
-      if (_openPrefabIcon != null) {
-        _openPrefabIcon.image = EditorGUIUtility.IconContent(OPEN_ASSET_ICON_NAME).image;
-        _openPrefabIcon.RegisterCallback<MouseUpEvent>(PrefabIconCallback);
+      if (_openIcon != null) {
+        _openIcon.image = EditorGUIUtility.IconContent(OPEN_ASSET_ICON_NAME).image;
+        _openIcon.RegisterCallback<MouseUpEvent>(OpenIconMouseUpCallback);
       }
 
       if (_favoriteIcon != null) {
         _favoriteIcon.image = EditorGUIUtility.IconContent(FAVORITE_EMPTY_ICON_NAME).image;
         _favoriteIcon?.RegisterCallback<MouseUpEvent>(FavoriteIconCallback);
       }
-
 
       Add(_entryRoot);
     }
@@ -112,8 +106,8 @@ namespace UnityEngine.UIElements {
         style.display = DisplayStyle.None;
         _entry?.onFavoriteChanged.RemoveListener(FavoriteChangedCallback);
         _entry = null;
-        _selectedName.text = string.Empty;
-        _selectedIcon.image = null;
+        _entryText.text = string.Empty;
+        _entryIcon.image = null;
         return;
       }
 
@@ -121,16 +115,17 @@ namespace UnityEngine.UIElements {
       _entry = value;
       _entry.onFavoriteChanged.AddListener(FavoriteChangedCallback);
 
-      if (_selectedName != null) {
+      if (_entryText != null) {
         SetNameLabel(value);
       }
 
-      if (_selectedIcon != null) {
-        _selectedIcon.image = value.Icon;
+      if (_entryIcon != null) {
+        _entryIcon.image = value.Icon;
       }
 
-      if (_openPrefabIcon != null) {
-        _openPrefabIcon.style.display = value.IsGameObject
+      if (_openIcon != null) {
+        // Debug.Log($"{Entry.DisplayName} - {Enum.GetName(typeof(RefState), Entry.RefState)}");
+        _openIcon.style.display = value.RefState.HasFlag(RefState.GameObject)
           ? DisplayStyle.None
           : DisplayStyle.Flex;
       }
@@ -147,58 +142,32 @@ namespace UnityEngine.UIElements {
       if (Entry == null) {
         return;
       }
+      _entryText.text = value.DisplayName;
+      // Debug.Log($"entry type of {value.DisplayName} is {value.GetType()}");
 
-      if (Entry.IsAsset) {
-        if (value.IsDeleted) {
-          _selectedName.style.color = (StyleColor)DELETED_OR_DESTROYED_COLOR;
-          _selectedName.text = "<s>" + value.Name + "</s>";
-        } else {
-          _selectedName.style.color = (StyleColor)Color.white;
-          _selectedName.text = value.Name;
-        }
-      }
-
-      if (Entry.IsGameObject) {
-        string extName = string.IsNullOrEmpty(value.SceneName)
-          ? value.Name
-          : string.Concat(value.SceneName, "/", value.Name);
-        _selectedName.text = value.GameObjectInstanceState == GameObjectState.Destroyed
-          ? "<s>" + extName + "</s>"
-          : extName;
-        _selectedName.style.color = Entry.GameObjectInstanceState switch {
-          GameObjectState.Loaded => (StyleColor)SCENE_OBJECT_COLOR,
-          GameObjectState.Unloaded => (StyleColor)Color.grey,
-          GameObjectState.Destroyed => (StyleColor)DELETED_OR_DESTROYED_COLOR,
-          _ => (StyleColor)Color.white,
-        };
-      }
+      _entryText.style.color = Entry.RefState switch {
+        RefState.Loaded => (StyleColor)SCENE_OBJECT_COLOR,
+        RefState.Staged => (StyleColor)SCENE_OBJECT_COLOR,
+        RefState.Unloaded => (StyleColor)Color.grey,
+        RefState.Unstaged => (StyleColor)Color.grey,
+        RefState.Destroyed => (StyleColor)DELETED_OR_DESTROYED_COLOR,
+        RefState.Deleted => (StyleColor)DELETED_OR_DESTROYED_COLOR,
+        _ => (StyleColor)Color.white,
+      };
     }
 
-    private void PingEntry() {
+
+    private void PingIconMouseUpCallback(MouseUpEvent evt) {
       if (Entry == null) {
         return;
       }
 
       Entry.Ping();
-    }
-
-    private void PingIconCallback(MouseUpEvent evt) {
-      PingEntry();
       evt.StopPropagation();
     }
 
-    private void PrefabIconCallback(MouseUpEvent evt) {
-      if (Entry == null || Entry.Ref == null) {
-        return;
-      }
-
-      if (!Entry.IsGameObject) {
-        AssetDatabase.OpenAsset(Entry.Ref);
-      } else if (Entry.GameObjectInstanceState == GameObjectState.Unloaded) {
-        if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) {
-          EditorSceneManager.OpenScene(Entry.ScenePath);
-        }
-      }
+    private void OpenIconMouseUpCallback(MouseUpEvent evt) {
+      Entry.Open();
       evt.StopPropagation();
     }
 
