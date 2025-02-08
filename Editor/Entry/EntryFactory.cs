@@ -21,7 +21,6 @@ namespace Synaptafin.Editor.SelectionTracker {
       }
 
       if (id.identifierType is 1 or 3) {
-        Debug.Log("An Asset Entry is Created");
         return new NormalAssetEntry(obj, id);
       }
       return null;
