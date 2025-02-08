@@ -102,6 +102,7 @@ namespace Synaptafin.Editor.SelectionTracker {
       }
 
       if (evt.button == 0 && evt.clickCount == 2) {
+        _entryElement.GetEntryService().ResetCurrentSelection();
         Entry.Open();
       }
     }

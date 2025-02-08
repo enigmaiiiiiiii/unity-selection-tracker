@@ -18,6 +18,7 @@ namespace Synaptafin.Editor.SelectionTracker {
       OnUpdated?.Invoke();
     }
     public void RemoveAll(Predicate<Entry> predicate);
+    public void ResetCurrentSelection();
   }
 
   [Serializable]
@@ -112,9 +113,10 @@ namespace Synaptafin.Editor.SelectionTracker {
       return _entryList[_currentSelectionIndex];
     }
 
-    private void ResetCurrentSelection() {
+    public void ResetCurrentSelection() {
       _currentSelectionIndex = -1;
     }
+
   }
 
   [Serializable]
@@ -161,6 +163,8 @@ namespace Synaptafin.Editor.SelectionTracker {
     }
 
     public void RemoveAll(Predicate<Entry> predicate) { }
+
+    public void ResetCurrentSelection() { }
   }
 
   [Serializable]
@@ -243,8 +247,11 @@ namespace Synaptafin.Editor.SelectionTracker {
       OnUpdated?.Invoke();
     }
 
+    public void ResetCurrentSelection() { }
+
     public void StoreOriginalFavorites() {
       _entries0 = new List<Entry>(_entries);
     }
+
   }
 }
