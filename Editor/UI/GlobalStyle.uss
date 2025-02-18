@@ -1,3 +1,8 @@
+:root {
+    --color-deleted: rgba(211, 79, 79, 1.0);
+    --color-activated: #8EBD8E;
+}
+
 .tracker-root {
     width: 100%;
     height: 100%;
@@ -9,6 +14,7 @@
     justify-content: space-between;
     font-size: 12px;
     -unity-text-align: middle-left;
+    text-align: middle-left;
     margin: 2px;
     padding: 3px;
     background-color: rgba(0, 0, 0, 0.1);
@@ -34,6 +40,18 @@
 .entry__label {
     flex-grow: 1;
     overflow: hidden;
+}
+
+.activated {
+    color: var(--color-activated);
+}
+
+.unloaded {
+    color: gray;
+}
+
+.deleted {
+    color: var(--color-deleted);
 }
 
 .entry__interaction {

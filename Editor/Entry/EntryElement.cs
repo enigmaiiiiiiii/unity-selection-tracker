@@ -11,16 +11,17 @@ namespace UnityEngine.UIElements {
 
     private readonly VisualElement _entryRoot;
     private readonly IEntryService _entryService;
-    private readonly Label _entryText;
+    private readonly Label _entryLabel;
     private readonly Image _entryIcon;
     private readonly Image _pingIcon;
     private readonly Image _openIcon;
     private readonly Image _favoriteIcon;
     private readonly VisualElement _entryPopupRoot;
     private bool _isFavorite = false;
+    private readonly string _entryLabelDefaultClassName = "entry__label";
 
     public int Index { get; set; }
-    public string EntryLabel => _entryText.text;
+    public string EntryText => _entryLabel.text;
 
     private Entry _entry;
     public Entry Entry {
@@ -46,7 +47,7 @@ namespace UnityEngine.UIElements {
         PreferencePersistence.instance.onUpdated -= PreferenceUpdatedCallback;
       });
 
-      _entryText = _entryRoot.Q<Label>("Name");
+      _entryLabel = _entryRoot.Q<Label>("Name");
       _entryIcon = _entryRoot.Q<Image>("Icon");
       _pingIcon = _entryRoot.Q<Image>("PingIcon");
       _openIcon = _entryRoot.Q<Image>("OpenPrefabIcon");
@@ -106,7 +107,7 @@ namespace UnityEngine.UIElements {
         style.display = DisplayStyle.None;
         _entry?.onFavoriteChanged.RemoveListener(FavoriteChangedCallback);
         _entry = null;
-        _entryText.text = string.Empty;
+        _entryLabel.text = string.Empty;
         _entryIcon.image = null;
         return;
       }
@@ -115,7 +116,7 @@ namespace UnityEngine.UIElements {
       _entry = value;
       _entry.onFavoriteChanged.AddListener(FavoriteChangedCallback);
 
-      if (_entryText != null) {
+      if (_entryLabel != null) {
         SetNameLabel(value);
       }
 
@@ -142,18 +143,42 @@ namespace UnityEngine.UIElements {
       if (Entry == null) {
         return;
       }
-      _entryText.text = value.DisplayName;
-      // Debug.Log($"entry type of {value.DisplayName} is {value.GetType()}");
+      _entryLabel.text = value.DisplayName;
 
-      _entryText.style.color = Entry.RefState switch {
-        RefState.Loaded => (StyleColor)SCENE_OBJECT_COLOR,
-        RefState.Staged => (StyleColor)SCENE_OBJECT_COLOR,
-        RefState.Unloaded => (StyleColor)Color.grey,
-        RefState.Unstaged => (StyleColor)Color.grey,
-        RefState.Destroyed => (StyleColor)DELETED_OR_DESTROYED_COLOR,
-        RefState.Deleted => (StyleColor)DELETED_OR_DESTROYED_COLOR,
-        _ => (StyleColor)Color.white,
-      };
+      /* _entryLabel.style.color = Entry.RefState switch { */
+      /*   RefState.Loaded => (StyleColor)SCENE_OBJECT_COLOR, */
+      /*   RefState.Staged => (StyleColor)SCENE_OBJECT_COLOR, */
+      /*   RefState.Unloaded => (StyleColor)Color.grey, */
+      /*   RefState.Unstaged => (StyleColor)Color.grey, */
+      /*   RefState.Destroyed => (StyleColor)DELETED_OR_DESTROYED_COLOR, */
+      /*   RefState.Deleted => (StyleColor)DELETED_OR_DESTROYED_COLOR, */
+      /*   _ => (StyleColor)Color.white, */
+      /* }; */
+
+      switch (Entry.RefState) {
+        case RefState.Loaded:
+        case RefState.Staged:
+          AddModifierClassToLabel(ACTIVATED_MODIFIER_CLASS_NAME);
+          break;
+        case RefState.Unloaded:
+        case RefState.Unstaged:
+          AddModifierClassToLabel(UNLOADED_MODIFIER_CLASS_NAME);
+          break;
+        case RefState.Destroyed:
+        case RefState.Deleted:
+          AddModifierClassToLabel(DELETED_MODIFIER_CLASS_NAME);
+          break;
+        default:
+          Debug.Log("No modifier");
+          break;
+      }
+    }
+
+    private void AddModifierClassToLabel(string modifier) {
+      Debug.Log($"Add modifier: {modifier}");
+      _entryLabel.ClearClassList();
+      _entryLabel.AddToClassList(_entryLabelDefaultClassName);
+      _entryLabel.AddToClassList(modifier);
     }
 
 

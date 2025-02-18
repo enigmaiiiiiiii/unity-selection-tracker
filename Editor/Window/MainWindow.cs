@@ -111,14 +111,14 @@ namespace Synaptafin.Editor.SelectionTracker {
         return true;
       }
 
-      if (string.IsNullOrEmpty(elt.EntryLabel)) {
+      if (string.IsNullOrEmpty(elt.EntryText)) {
         return false;
       }
 
       string[] keywords = _searchText.Split(' ');
       bool isMatch = false;
       foreach (string keyword in keywords) {
-        if (elt.EntryLabel.ToLower().Contains(keyword)) {
+        if (elt.EntryText.ToLower().Contains(keyword)) {
           isMatch = true;
           break;
         }

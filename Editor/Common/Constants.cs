@@ -22,6 +22,10 @@ namespace Synaptafin.Editor.SelectionTracker {
     public static Color PREFAB_COLOR = new(0.37f, 0.37f, 0.37f, 1.0f);
     public static Color DELETED_OR_DESTROYED_COLOR = new(0.83f, 0.31f, 0.31f, 1.0f);
     public static StyleColor ASSET_COLOR = new(Color.white);
+
+    public const string ACTIVATED_MODIFIER_CLASS_NAME = "activated";
+    public const string DELETED_MODIFIER_CLASS_NAME = "deleted";
+    public const string UNLOADED_MODIFIER_CLASS_NAME = "unloaded";
   }
 
   public static class UnityBuiltInIcons {
