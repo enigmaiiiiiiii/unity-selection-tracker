@@ -20,7 +20,7 @@ namespace Synaptafin.Editor.SelectionTracker {
           ? _cachedName
           : string.Concat(_cachedSceneName, "/", _cachedName);
 
-        return RefState.HasFlag(RefState.Destroyed)
+        return RefState.HasFlag(RefState.Destroyed) || RefState.HasFlag(RefState.Deleted)
           ? $"<s>{extName}</s>"
           : extName;
       }
@@ -36,9 +36,20 @@ namespace Synaptafin.Editor.SelectionTracker {
           return RefState.Deleted;
         }
 
-        return _cachedRef == null && !_cachedScene.isLoaded
-          ? RefState.Unstaged
-          : RefState.Staged;
+        if (_cachedRef == null) {
+          if (_cachedScene.isLoaded) {
+            return RefState.Deleted;
+          }
+          if (!_cachedScene.isLoaded) {
+            return RefState.Unloaded;
+          }
+        }
+
+        if (_cachedRef != null) {
+          return RefState.Staged;
+        }
+
+        return RefState.Unknown;
       }
     }
 

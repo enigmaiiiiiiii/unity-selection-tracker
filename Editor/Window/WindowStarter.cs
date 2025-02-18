@@ -39,7 +39,6 @@ namespace Synaptafin.Editor.SelectionTracker {
       };
       wnd.titleContent = titleContent;
     }
-
   }
 }
 

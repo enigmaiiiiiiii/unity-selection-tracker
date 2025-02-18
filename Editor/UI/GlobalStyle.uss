@@ -40,6 +40,7 @@
 .entry__label {
     flex-grow: 1;
     overflow: hidden;
+    color: white;
 }
 
 .activated {

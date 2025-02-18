@@ -20,7 +20,7 @@ namespace Synaptafin.Editor.SelectionTracker {
     Destroyed = (1 << 6) | GameObject,
     Playing = (1 << 7) | GameObject,
 
-    // Asset or prefab content Deleted
+    // Asset, Prefab, GameObject content Deleted
     Deleted = 1 << 8,
 
     // Prefab Content State

@@ -1,4 +1,3 @@
-using System;
 using Synaptafin.Editor.SelectionTracker;
 using UnityEditor;
 using static Synaptafin.Editor.SelectionTracker.Constants;
@@ -125,7 +124,6 @@ namespace UnityEngine.UIElements {
       }
 
       if (_openIcon != null) {
-        // Debug.Log($"{Entry.DisplayName} - {Enum.GetName(typeof(RefState), Entry.RefState)}");
         _openIcon.style.display = value.RefState.HasFlag(RefState.GameObject)
           ? DisplayStyle.None
           : DisplayStyle.Flex;
@@ -145,16 +143,6 @@ namespace UnityEngine.UIElements {
       }
       _entryLabel.text = value.DisplayName;
 
-      /* _entryLabel.style.color = Entry.RefState switch { */
-      /*   RefState.Loaded => (StyleColor)SCENE_OBJECT_COLOR, */
-      /*   RefState.Staged => (StyleColor)SCENE_OBJECT_COLOR, */
-      /*   RefState.Unloaded => (StyleColor)Color.grey, */
-      /*   RefState.Unstaged => (StyleColor)Color.grey, */
-      /*   RefState.Destroyed => (StyleColor)DELETED_OR_DESTROYED_COLOR, */
-      /*   RefState.Deleted => (StyleColor)DELETED_OR_DESTROYED_COLOR, */
-      /*   _ => (StyleColor)Color.white, */
-      /* }; */
-
       switch (Entry.RefState) {
         case RefState.Loaded:
         case RefState.Staged:
@@ -169,13 +157,13 @@ namespace UnityEngine.UIElements {
           AddModifierClassToLabel(DELETED_MODIFIER_CLASS_NAME);
           break;
         default:
-          Debug.Log("No modifier");
+          _entryLabel.ClearClassList();
+          _entryLabel.AddToClassList(_entryLabelDefaultClassName);
           break;
       }
     }
 
     private void AddModifierClassToLabel(string modifier) {
-      Debug.Log($"Add modifier: {modifier}");
       _entryLabel.ClearClassList();
       _entryLabel.AddToClassList(_entryLabelDefaultClassName);
       _entryLabel.AddToClassList(modifier);

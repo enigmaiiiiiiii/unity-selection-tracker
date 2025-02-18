@@ -182,7 +182,6 @@ namespace Synaptafin.Editor.SelectionTracker {
 
   }
 
-  public class HistoryWindow : BaseWindow<HistoryService> { }
   public class MostVisitedWindow : BaseWindow<MostVisitedService> { }
   public class FavoritesWindow : BaseWindow<FavoritesService> {
 
