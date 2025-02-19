@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
-using UnityEngine.UIElements;
 using UnityEditor;
+using UnityEngine.UIElements;
 
 namespace Synaptafin.Editor.SelectionTracker {
 
@@ -14,13 +14,13 @@ namespace Synaptafin.Editor.SelectionTracker {
 
     public StyleSheet GlobalStyle => _uiAssetManager.globalStyle;
     public VisualTreeAsset PreferenceTemplate => _uiAssetManager.preferenceTemplate;
-    public VisualTreeAsset TrackerTemplate => _uiAssetManager.TrackerTemplate;
+    public VisualTreeAsset TrackerTemplate => _uiAssetManager.trackerTemplate;
     public VisualTreeAsset EntryTemplate => _uiAssetManager.entryTemplate;
     public VisualTreeAsset DetailInfoTemplate => _uiAssetManager.detailInfoTemplate;
 
     private UIAssetLocator() {
-      string filter = $"t:{nameof(UIAssetManager)}";
-      string guid = AssetDatabase.FindAssets(filter).FirstOrDefault();
+      string filter = $"t:{typeof(UIAssetManager).FullName}";
+      string guid = AssetDatabase.FindAssets(filter, new[] { "Packages/" }).FirstOrDefault();
       _uiAssetManager = AssetDatabase.LoadAssetAtPath<UIAssetManager>(AssetDatabase.GUIDToAssetPath(guid));
     }
   }
