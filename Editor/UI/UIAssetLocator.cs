@@ -20,7 +20,7 @@ namespace Synaptafin.Editor.SelectionTracker {
 
     private UIAssetLocator() {
       string filter = $"t:{typeof(UIAssetManager).FullName}";
-      string guid = AssetDatabase.FindAssets(filter, new[] { "Packages/" }).FirstOrDefault();
+      string guid = AssetDatabase.FindAssets(filter).FirstOrDefault();
       _uiAssetManager = AssetDatabase.LoadAssetAtPath<UIAssetManager>(AssetDatabase.GUIDToAssetPath(guid));
     }
   }
