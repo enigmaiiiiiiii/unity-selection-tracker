@@ -29,7 +29,7 @@ namespace UnityEngine.UIElements {
     }
 
     public EntryElement() {
-      _entryRoot = UIAssetManager.instance.entryTemplate.Instantiate();
+      _entryRoot = UIAssetLocator.Instance.EntryTemplate.Instantiate();
       this.AddManipulator(new ContextualMenuManipulator(evt => {
         evt.menu.AppendAction("Remove", _ => _entryService.RemoveEntry(Entry), DropdownMenuAction.AlwaysEnabled);
         evt.StopPropagation();

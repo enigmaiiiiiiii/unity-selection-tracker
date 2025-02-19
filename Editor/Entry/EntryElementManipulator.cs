@@ -114,7 +114,7 @@ namespace Synaptafin.Editor.SelectionTracker {
       private VisualElement _root;
 
       public override VisualElement CreateGUI() {
-        _root = UIAssetManager.instance.detailInfoTemplate.Instantiate();
+        _root = UIAssetLocator.Instance.DetailInfoTemplate.Instantiate();
         return _root;
       }
     }

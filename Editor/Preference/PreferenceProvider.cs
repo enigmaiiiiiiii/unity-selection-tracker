@@ -6,8 +6,8 @@ using UnityEngine.UIElements;
 namespace Synaptafin.Editor.SelectionTracker {
   public static class PreferenceProvider {
 
-    public static VisualTreeAsset preferenceUxml = UIAssetManager.instance.preferenceTemplate;
-    public static StyleSheet styleSheet = UIAssetManager.instance.globalStyle;
+    public static VisualTreeAsset preferenceUxml = UIAssetLocator.Instance.PreferenceTemplate;
+    public static StyleSheet styleSheet = UIAssetLocator.Instance.GlobalStyle;
 
     private static readonly PreferencePersistence s_preferencePersistence = PreferencePersistence.instance;
 
