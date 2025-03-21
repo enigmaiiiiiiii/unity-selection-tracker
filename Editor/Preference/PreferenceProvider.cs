@@ -6,8 +6,8 @@ using UnityEngine.UIElements;
 namespace Synaptafin.Editor.SelectionTracker {
   public static class PreferenceProvider {
 
-    public static VisualTreeAsset preferenceUxml = UIAssetLocator.Instance.PreferenceTemplate;
-    public static StyleSheet styleSheet = UIAssetLocator.Instance.GlobalStyle;
+    private static readonly VisualTreeAsset s_preferenceUxml = UIAssetLocator.Instance.PreferenceTemplate;
+    private static readonly StyleSheet s_styleSheet = UIAssetLocator.Instance.GlobalStyle;
 
     private static readonly PreferencePersistence s_preferencePersistence = PreferencePersistence.instance;
 
@@ -18,10 +18,10 @@ namespace Synaptafin.Editor.SelectionTracker {
         label = "Selection Tracker",
         activateHandler = static (searchContext, rootElement) => {
 
-          VisualElement prefRoot = preferenceUxml.CloneTree();
+          VisualElement prefRoot = s_preferenceUxml.CloneTree();
 
           rootElement.Add(prefRoot);
-          rootElement.styleSheets.Add(styleSheet);
+          rootElement.styleSheets.Add(s_styleSheet);
 
           VisualElement toggleListRoot = prefRoot.Q<VisualElement>("toggle-list-root");
 

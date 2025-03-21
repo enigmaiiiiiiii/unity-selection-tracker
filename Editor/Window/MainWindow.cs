@@ -35,7 +35,7 @@ namespace Synaptafin.Editor.SelectionTracker {
       }
       VisualElement root = rootVisualElement;
       if (rootVisualTreeAsset == null) {
-        rootVisualTreeAsset = UIAssetLocator.Instance.TrackerTemplate;
+        rootVisualTreeAsset = UIAssetLocator.Instance.WindowTemplate;
       }
       _windowRoot = rootVisualTreeAsset.CloneTree();
       root.Add(_windowRoot);

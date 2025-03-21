@@ -7,14 +7,14 @@ namespace Synaptafin.Editor.SelectionTracker {
 
   public class UIAssetLocator {
 
-    public static Lazy<UIAssetLocator> instance = new(static () => new());
-    public static UIAssetLocator Instance => instance.Value;
+    private static readonly Lazy<UIAssetLocator> s_instance = new(static () => new UIAssetLocator());
+    public static UIAssetLocator Instance => s_instance.Value;
 
     private readonly UIAssetManager _uiAssetManager;
 
     public StyleSheet GlobalStyle => _uiAssetManager.globalStyle;
     public VisualTreeAsset PreferenceTemplate => _uiAssetManager.preferenceTemplate;
-    public VisualTreeAsset TrackerTemplate => _uiAssetManager.trackerTemplate;
+    public VisualTreeAsset WindowTemplate => _uiAssetManager.windowTemplate;
     public VisualTreeAsset EntryTemplate => _uiAssetManager.entryTemplate;
     public VisualTreeAsset DetailInfoTemplate => _uiAssetManager.detailInfoTemplate;
 

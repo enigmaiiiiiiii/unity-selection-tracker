@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
+using static Synaptafin.Editor.SelectionTracker.Constants;
 
 namespace Synaptafin.Editor.SelectionTracker {
 
@@ -24,17 +25,17 @@ namespace Synaptafin.Editor.SelectionTracker {
     }
 
     public PreferencePersistence() {
-      _toggles.Add((Constants.AUTO_REMOVE_DESTROYED_KEY, true));
-      _toggles.Add((Constants.AUTO_REMOVE_UNLOADED_KEY, false));
-      _toggles.Add((Constants.AUTO_REMOVE_DUPLICATED_KEY, true));
-      _toggles.Add((Constants.DRAW_FAVORITES_KEY, true));
-      _toggles.Add((Constants.ORDER_BY_NEWER_KEY, true));
-      _toggles.Add((Constants.BACKGROUND_RECORD_KEY, false));
-      _toggles.Add((Constants.DETAIL_ON_HOVER_KEY, true));
+      _toggles.Add((AUTO_REMOVE_DESTROYED_KEY, true));
+      _toggles.Add((AUTO_REMOVE_UNLOADED_KEY, false));
+      _toggles.Add((AUTO_REMOVE_DUPLICATED_KEY, true));
+      _toggles.Add((DRAW_FAVORITES_KEY, true));
+      _toggles.Add((ORDER_BY_NEWER_KEY, true));
+      _toggles.Add((BACKGROUND_RECORD_KEY, false));
+      _toggles.Add((DETAIL_ON_HOVER_KEY, true));
 
-      _toggles.Add((Constants.RECORD_GAMEOBJECTS_KEY, true));
-      _toggles.Add((Constants.SHOW_UNLOADED_GAMEOBJECTS_KEY, true));
-      _toggles.Add((Constants.SHOW_DESTROYED_GAMEOBJECTS_KEY, false));
+      _toggles.Add((RECORD_GAMEOBJECTS_KEY, true));
+      _toggles.Add((SHOW_UNLOADED_GAMEOBJECTS_KEY, true));
+      _toggles.Add((SHOW_DESTROYED_GAMEOBJECTS_KEY, false));
     }
 
     public bool GetToggleValue(string key) {
