@@ -1,8 +1,8 @@
 using System.Threading;
 using System.Threading.Tasks;
-using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
+using UnityEngine;
 using UnityEngine.UIElements;
 using static Synaptafin.Editor.SelectionTracker.Constants;
 
@@ -79,7 +79,7 @@ namespace Synaptafin.Editor.SelectionTracker {
     }
 
 
-    private void ClickCallback(ClickEvent evt) {
+    private async void ClickCallback(ClickEvent evt) {
       if (Entry == null) {
         return;
       }
@@ -96,8 +96,13 @@ namespace Synaptafin.Editor.SelectionTracker {
           return;
         }
 
-        // when VisualElement selected, pass the index to the service
-        _entryElement.GetEntryService().CurrentSelectionIndex = _entryElement.Index;
+
+        if (PreferencePersistence.instance.GetToggleValue(UPDATE_WHEN_SELECTION_IN_TRACKER)) {
+          // when VisualElement selected, pass the index to the service
+          _entryElement.GetEntryService().CurrentSelectionIndex = _entryElement.Index;
+        }
+
+        await Task.Delay(700);
         Selection.activeObject = Entry.Ref;
       }
 

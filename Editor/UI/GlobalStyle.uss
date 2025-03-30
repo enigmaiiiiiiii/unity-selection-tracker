@@ -1,48 +1,106 @@
 @import "tailwindcss";
 
+.Convention {
+    /* 1. Position & Display */
+    /* 1.1 Position: top, right, bottom, left, z-index */
+    /* 1.2 Display: flex, grid, inline, block, hidden */
+
+    /* 2. Box Model */
+    /* 2.1 Width & Height */
+    /* 2.2 Padding, Margin, Border */
+    margin: 0;
+    padding: 0;
+    border-width: 0;
+
+    /* 3. Layout */
+    /* 3.1 justify, align, col, row */
+    /* 3.2 gap, space, wrap */
+    /* 3.3 flex-grow, flex-shrink, flex-basis */
+
+    /* 4. Typography */
+    /* 4.1 font-family, font-size, font-weight */
+    /* 4.2 font-color, inline-height, text-align */
+
+    /* 5. Background */
+    /* 5.1 bg-color, bg-image, bg-size */
+
+    /* 6. Effects */
+    /* 6.1 transform, transition, animation */
+
+    /* 7. Miscellaneous(Visual Effects) */
+    /* 7.1 box-shadow, overflow, cursor, visibility */
+    /* 7.2 filter, backdrop, mask, clip-path */
+
+    /* 8. pseudo-classes */
+    /* 8.1 hover, focus, active, visited */
+}
+
+
 :root {
     --color-deleted: rgba(211, 79, 79, 1.0);
     --color-activated: #8EBD8E;
 }
 
 .tracker-root {
+    /* 2. Box Model */
     width: 100%;
     height: 100%;
 }
 
 .entry__root {
+    /* 1. Position & Display */
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    font-size: 12px;
-    -unity-text-align: middle-left;
-    text-align: middle-left;
+
+    /* 2. Box Model */
     margin: 2px;
     padding: 3px;
-    background-color: rgba(0, 0, 0, 0.1);
     border-color: black;
     border-width: 1px;
     border-radius: 3px;
+
+    /* 3. Layout */
+    flex-direction: row;
+    justify-content: space-between;
+
+    /* 4. Typography */
+    font-size: 12px;
+    -unity-text-align: middle-left;
+    text-align: middle-left;
+
+    /* 5. Background */
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 .entry__info {
-    flex-grow: 1;
+    /* 1. Position & Display */
     display: flex;
+
+    /* 3. Layout */
     flex-direction: row;
+    flex-grow: 1;
     justify-content: flex-start;
+
+    /* 7. Miscellaneous(Visual Effects) */
     overflow: hidden;
 }
 
 .entry__icon {
+    /* 2. Box Model */
     width: 16px;
     min-width: 16px;
     max-height: 16px;
 }
 
 .entry__label {
+
+    /* 3. Layout */
     flex-grow: 1;
-    overflow: hidden;
+
+    /* 4. Typography */
     color: white;
+    
+    /* 7. Miscellaneous(Visual Effects) */
+    overflow: hidden;
 }
 
 .activated {
@@ -79,19 +137,48 @@
 }
 
 .preference__title {
+
+    /* 4. Typography */
     font-size: 24px;
     -unity-font-style: bold;
 }
 
-.preference__toggles > Toggle Label {
+.preference-toggles__box > Toggle Label {
+    /* 1. Position & Display */
+    width: 50%;
+}
+
+.preference-state-filter__box {
+    /* 1. Position & Display */
+    display: flex;
+    width: 100%;
+    margin-top: 5px;
+
+    /* 3. Layout */
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.preference-filter-field__box {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+
+    align-self: center;
+    flex-grow: 1;
+}
+
+.preference-filter-field__enum-flags-field {
     width: 50%;
 }
 
 .window__scroll-view {
+    /* 1. Position & Display */
     height: 100%;
 }
 
 .window__search-toolbar {
+    /* 1. Position & Display */
     margin-top: 3px;
     margin-bottom: 3px;
     min-height: 19px;
@@ -99,10 +186,16 @@
 }
 
 .window__edited-box {
+    /* 1. Position & Display */
     display: none;
+
+    /* 2. Box Model */
+    margin-bottom: 2px;
+
+    /* 3. Layout */
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
-    margin-bottom: 2px;
+
 }
 

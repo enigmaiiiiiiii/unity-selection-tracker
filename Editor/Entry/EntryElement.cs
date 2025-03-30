@@ -63,10 +63,12 @@ namespace UnityEngine.UIElements {
         _openIcon.RegisterCallback<MouseUpEvent>(OpenIconMouseUpCallback);
       }
 
-      if (_favoriteIcon != null) {
-        _favoriteIcon.image = EditorGUIUtility.IconContent(FAVORITE_EMPTY_ICON_NAME).image;
-        _favoriteIcon?.RegisterCallback<MouseUpEvent>(FavoriteIconCallback);
-      }
+      _favoriteIcon.style.display = PreferencePersistence.instance.GetToggleValue(DRAW_FAVORITES_KEY)
+        ? DisplayStyle.Flex
+        : DisplayStyle.None;
+
+      _favoriteIcon.RegisterCallback<MouseUpEvent>(FavoriteIconCallback);
+      _favoriteIcon.image = EditorGUIUtility.IconContent(FAVORITE_EMPTY_ICON_NAME).image;
 
       Add(_entryRoot);
     }

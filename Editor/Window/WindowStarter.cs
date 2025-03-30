@@ -29,7 +29,7 @@ namespace Synaptafin.Editor.SelectionTracker {
       wnd.titleContent = titleContent;
     }
 
-    [MenuItem(Constants.MENU_PATH_PREFIX + "Favorites")]
+    /* [MenuItem(Constants.MENU_PATH_PREFIX + "Favorites")] */
     public static void FavoritesWindow() {
       FavoritesWindow wnd = EditorWindow.GetWindow<FavoritesWindow>();
       GUIContent titleContent = new("Favorites") {

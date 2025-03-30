@@ -5,9 +5,12 @@
     noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
 
     <engine:Label class="preference__title" text="Selection Tracker" />
-    <engine:VisualElement class="preference__toggles" name="toggle-list-root"> 
+    <engine:VisualElement class="preference-toggles__box" name="toggle-list-root"> 
     </engine:VisualElement>
-    <engine:VisualElement>
-        <editor:EnumFlagsField name="state-filter"/>
+    <engine:VisualElement class="preference-state-filter__box">
+        <engine:Label class="preference__label" text="State Filter:" />
+        <engine:VisualElement class="preference-filter-field__box">
+            <editor:EnumFlagsField class="preference-filter-field__enum-flags-field" name="state-filter"/>
+        </engine:VisualElement>
     </engine:VisualElement>
 </engine:UXML>
